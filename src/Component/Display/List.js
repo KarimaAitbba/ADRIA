@@ -7,9 +7,7 @@ import {
   getdemandes,
   getDemandeById
 } from "../../actions/projectactions";
-import ListLink from "../Links/ListLink";
 import Search from "../Search/Search";
-import { BrowserRouter, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 class List extends React.Component {
   componentDidMount() {
@@ -26,167 +24,223 @@ class List extends React.Component {
   };
 
   render() {
-    const { comptes } = this.props.compte;
     const { demandes } = this.props.demande;
     const { demande } = this.props.demande;
+    if (demandes.length !== 0) {
+      return (
+        <div>
+          <link rel="apple-touch-icon" href="apple-icon.png" />
+          <link rel="shortcut icon" href="favicon.ico" />
+          <link
+            rel="stylesheet"
+            href="vendors/bootstrap/dist/css/bootstrap.min.css"
+          />
+          <link
+            rel="stylesheet"
+            href="vendors/font-awesome/css/font-awesome.min.css"
+          />
+          <link
+            rel="stylesheet"
+            href="vendors/themify-icons/css/themify-icons.css"
+          />
+          <link
+            rel="stylesheet"
+            href="vendors/flag-icon-css/css/flag-icon.min.css"
+          />
+          <link
+            rel="stylesheet"
+            href="vendors/selectFX/css/cs-skin-elastic.css"
+          />
+          <link rel="stylesheet" href="vendors/jqvmap/dist/jqvmap.min.css" />
+          <link rel="stylesheet" href="assets/css/style.css" />
 
-    return (
-      <div>
-        <link rel="apple-touch-icon" href="apple-icon.png" />
-        <link rel="shortcut icon" href="favicon.ico" />
-        <link
-          rel="stylesheet"
-          href="vendors/bootstrap/dist/css/bootstrap.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="vendors/font-awesome/css/font-awesome.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="vendors/themify-icons/css/themify-icons.css"
-        />
-        <link
-          rel="stylesheet"
-          href="vendors/flag-icon-css/css/flag-icon.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="vendors/selectFX/css/cs-skin-elastic.css"
-        />
-        <link rel="stylesheet" href="vendors/jqvmap/dist/jqvmap.min.css" />
-        <link rel="stylesheet" href="assets/css/style.css" />
+          <Search />
 
-        <Search />
-
-        <div className="content mt-3">
-          <div className="animated fadeIn">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="card">
-                  <div className="card-header">
-                    <strong className="card-title">My Requests</strong>
-                  </div>
-                  <div className="card-body">
-                    <table
-                      id="bootstrap-data-table-export"
-                      className="table table-striped table-bordered"
-                    >
-                      <thead>
-                        <tr>
-                          <th>Account Number</th>
-                          <th>Date of Request</th>
-                          <th>Pattern</th>
-                          <th>Number of Checkbooks</th>
-                          <th>Status</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {demandes.map(demande => (
-                          <tr key={demande.id}>
-                            <td>{demande.compte.numCompte} </td>
-                            <td>{demande.dateCreation} </td>
-                            <td> {demande.motif} </td>
-                            <td>{demande.nombreCheque}</td>
-                            <td>{demande.status} </td>
-                            <td>
-                              <Link to={`/updateRequest/${demande.id}`}>
+          <div className="content mt-3">
+            <div className="animated fadeIn">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="card">
+                    <div className="card-header">
+                      <strong className="card-title">My Requests</strong>
+                    </div>
+                    <div className="card-body">
+                      <table
+                        id="bootstrap-data-table-export"
+                        className="table table-striped table-bordered"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Account Number</th>
+                            <th>Date of Request</th>
+                            <th>Pattern</th>
+                            <th>Number of Checkbooks</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {demandes.map(demande => (
+                            <tr key={demande.id}>
+                              <td>{demande.compte.numCompte} </td>
+                              <td>{demande.dateCreation} </td>
+                              <td> {demande.motif} </td>
+                              <td>{demande.nombreCheque}</td>
+                              <td>{demande.status} </td>
+                              <td>
+                                <Link to={`/updateRequest/${demande.id}`}>
+                                  <button
+                                    type="button"
+                                    class="btn btn-info btn-sm"
+                                  >
+                                    <i class="fa fa-edit" />
+                                    &nbsp; Update
+                                  </button>
+                                </Link>
+                                &nbsp;&nbsp;
                                 <button
                                   type="button"
-                                  class="btn btn-info btn-sm"
+                                  class="btn btn-danger btn-sm"
+                                  data-toggle="modal"
+                                  data-target="#mediumModal"
+                                  onClick={this.ClickDetail}
+                                  value={demande.id}
                                 >
-                                  <i class="fa fa-edit" />
-                                  &nbsp; Update
+                                  <i class="fa fa-info" />
+                                  &nbsp; Detail
                                 </button>
-                              </Link>
-                              &nbsp;&nbsp;
-                              <button
-                                type="button"
-                                class="btn btn-danger btn-sm"
-                                data-toggle="modal"
-                                data-target="#mediumModal"
-                                onClick={this.ClickDetail}
-                                value={demande.id}
-                              >
-                                <i class="fa fa-info" />
-                                &nbsp; Detail
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="header">
+                  <div class="card-body">
+                    <CreateButton />
                   </div>
                 </div>
               </div>
-              <div class="header">
-                <div class="card-body">
-                  <CreateButton />
+            </div>
+          </div>
+          <div
+            class="modal fade"
+            id="mediumModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="mediumModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="mediumModalLabel">
+                    Request Details
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table className="table table-striped table-bordered">
+                    <tbody key={demande.id}>
+                      <tr>
+                        <th>Account Number of Request</th>
+                        <td>
+                          {demande.compte ? demande.compte.numCompte : "0"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Pattern of Request</th>
+                        <td>{demande.motif}</td>
+                      </tr>
+                      <tr>
+                        <th>Date of Request</th>
+                        <td>{demande.dateCreation}</td>
+                      </tr>
+                      <tr>
+                        <th>Checkbook Number</th>
+                        <td>{demande.nombreCheque}</td>
+                      </tr>
+                      <tr>
+                        <th>Status</th>
+                        <td>{demande.status} </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div
-          class="modal fade"
-          id="mediumModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="mediumModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="mediumModalLabel">
-                  Request Details
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <table className="table table-striped table-bordered">
-                  <tbody key={demande.id}>
-                    <tr>
-                      <th>Pattern of Request</th>
-                      <td>{demande.motif}</td>
-                    </tr>
-                    <tr>
-                      <th>Date of Request</th>
-                      <td>{demande.dateCreation}</td>
-                    </tr>
-                    <tr>
-                      <th>Checkbook Number</th>
-                      <td>{demande.nombreCheque}</td>
-                    </tr>
-                    <tr>
-                      <th>Status</th>
-                      <td>{demande.status} </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Cancel
-                </button>
-              </div>
+      );
+    } else {
+      return (
+        <div>
+          <link rel="apple-touch-icon" href="apple-icon.png" />
+          <link rel="shortcut icon" href="favicon.ico" />
+          <link
+            rel="stylesheet"
+            href="vendors/bootstrap/dist/css/bootstrap.min.css"
+          />
+          <link
+            rel="stylesheet"
+            href="vendors/font-awesome/css/font-awesome.min.css"
+          />
+          <link
+            rel="stylesheet"
+            href="vendors/themify-icons/css/themify-icons.css"
+          />
+          <link
+            rel="stylesheet"
+            href="vendors/flag-icon-css/css/flag-icon.min.css"
+          />
+          <link
+            rel="stylesheet"
+            href="vendors/selectFX/css/cs-skin-elastic.css"
+          />
+          <link rel="stylesheet" href="vendors/jqvmap/dist/jqvmap.min.css" />
+          <link rel="stylesheet" href="assets/css/style.css" />
+
+          <Search />
+
+          <div class="card-body">
+            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+              No Requests matching your Search!!
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <div class="header">
+            <div class="card-body">
+              <CreateButton />
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

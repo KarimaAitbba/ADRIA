@@ -128,12 +128,7 @@ class Form extends React.Component {
                         <small class="form-text text-muted">between 1-10</small>
                       </div>
 
-                      <button
-                        type="submit"
-                        class="btn btn-secondary"
-                        data-toggle="modal"
-                        data-target="#staticModal"
-                      >
+                      <button type="submit" class="btn btn-secondary">
                         <i class="fa fa-plus" />
                         &nbsp; Add Request
                       </button>

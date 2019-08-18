@@ -9,6 +9,7 @@ import {
 import UpdateLink from "../Links/UpdateLink";
 class UpdateRequest extends Component {
   componentDidMount() {
+    //recuperation de l'id de la demande
     const { id } = this.props.match.params;
     this.props.getcomptes();
     this.props.getDemandeById(id, this.props.history);
@@ -16,14 +17,20 @@ class UpdateRequest extends Component {
 
   constructor() {
     super();
-
     this.state = {
       id: "",
       motif: "",
       status: "registred",
       nombreCheque: "",
-      compte: {}
+      compte: {
+        abonne: {},
+        beneficiaire: "",
+        numCompte: "",
+        soldeComptable: "",
+        soldeCompte: ""
+      }
     };
+
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -45,6 +52,7 @@ class UpdateRequest extends Component {
       nombreCheque,
       compte
     });
+    this.state.compte = nextProps.demande.demande.compte;
   }
 
   onChange(e) {
@@ -59,7 +67,7 @@ class UpdateRequest extends Component {
       status: this.state.status,
       compte: this.state.compte
     };
-
+    console.log(newDemande);
     this.props.creacteDemande(newDemande, this.props.history);
   }
 
@@ -68,6 +76,30 @@ class UpdateRequest extends Component {
     const { comptes } = this.props.compte;
     return (
       <center>
+        <link rel="apple-touch-icon" href="apple-icon.png" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="vendors/bootstrap/dist/css/bootstrap.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="vendors/font-awesome/css/font-awesome.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="vendors/themify-icons/css/themify-icons.css"
+        />
+        <link
+          rel="stylesheet"
+          href="vendors/flag-icon-css/css/flag-icon.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="vendors/selectFX/css/cs-skin-elastic.css"
+        />
+        <link rel="stylesheet" href="vendors/jqvmap/dist/jqvmap.min.css" />
+        <link rel="stylesheet" href="assets/css/style.css" />
         <UpdateLink />
         <div class="content  mt-4">
           <div class="animated fadeIn">
@@ -87,10 +119,10 @@ class UpdateRequest extends Component {
                         type="hidden"
                         name="id"
                         value={this.state.id}
-                        onChange={this.onChange}
+                        onChange={this.onChange.bind(this)}
                       />
                       <div class="form-group">
-                        <label class=" form-control-label">
+                        <label for="disabledSelect" class=" form-control-label">
                           Account Number
                         </label>
                         <br />
@@ -101,24 +133,20 @@ class UpdateRequest extends Component {
                             </div>
 
                             <select
-                              id="select"
+                              id="disabledSelect"
+                              disabled
                               class="form-control"
                               data-placeholder="Choose a Number..."
                               defaultValue={"-1"}
                               tabIndex="1"
                               name="compte"
                               onChange={this.onChange.bind(this)}
-                              required
                             >
-                              <option value="-1">Choose a number...</option>
-                              {comptes.map(compte => (
-                                <option
-                                  value={JSON.stringify(compte)}
-                                  key={compte.numCompte}
-                                >
-                                  {compte.numCompte}
-                                </option>
-                              ))}
+                              <option value={this.state.compte}>
+                                {demande.compte
+                                  ? demande.compte.numCompte
+                                  : "en cours"}
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -141,7 +169,9 @@ class UpdateRequest extends Component {
                             required
                           />
                         </div>
-                        <small class="form-text text-muted">ex. xxxxxx</small>
+                        <small class="form-text text-muted">
+                          ex. decsription
+                        </small>
                       </div>
                       <div class="form-group">
                         <label class=" form-control-label">
@@ -162,7 +192,23 @@ class UpdateRequest extends Component {
                         </div>
                         <small class="form-text text-muted">between 1-10</small>
                       </div>
+                      <div class="form-group">
+                        <label class=" form-control-label">
+                          Date of this Request
+                        </label>
+                        <div class="input-group">
+                          <div class="input-group-addon">
+                            <i class="fa fa-calendar" />
+                          </div>
 
+                          <input
+                            class="form-control"
+                            name="motif"
+                            value={demande.dateCreation}
+                            disabled
+                          />
+                        </div>
+                      </div>
                       <button
                         type="submit"
                         class="btn btn-secondary"

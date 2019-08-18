@@ -7,7 +7,10 @@ import {
   GET_DEMANDEBYCOMPTE,
   GET_DEMANDEBYCOMPTEandSTATUT,
   GET_DEMANDEBYSTATUT,
-  GET_DEMANDEBYDATE
+  GET_DEMANDEBYDATE,
+  GET_DEMANDEBYDATEETSTATUT,
+  GET_DEMANDEBYDATEETCOMPTE,
+  GET_DEMANDEBYDATEETCOMPTEETSTATUT
 } from "./types";
 import { async } from "q";
 
@@ -25,6 +28,7 @@ export const getcomptes = () => async dispatch => {
   );
 
   dispatch({
+    //type data=GET_COMPTE(pour definir)
     type: GET_COMPTE,
     payload: res.data
   });
@@ -91,11 +95,57 @@ export const getDemandeByStatut = (statut, history) => async dispatch => {
 
 export const getDemandeByDate = (date, history) => async dispatch => {
   const res = await axios.get(
-    `http://localhost:8080/api/demande/Usernamestatus?username=Hanb&dateCreation=${date}&dateEnvoie=${date}`
+    `http://localhost:8080/api/demande/usernameDates?username=Hanb&dateCreation=${date}`
   );
 
   dispatch({
     type: GET_DEMANDEBYDATE,
+    payload: res.data
+  });
+};
+
+export const getDemandeByDateetStatut = (
+  status,
+  date,
+  history
+) => async dispatch => {
+  const res = await axios.get(
+    `http://localhost:8080/api/demande/usernameStatusDates?username=Hanb&status=${status}&dateCreation=${date}`
+  );
+
+  dispatch({
+    type: GET_DEMANDEBYDATEETSTATUT,
+    payload: res.data
+  });
+};
+
+export const getDemandeByDateEtCompte = (
+  num,
+  date,
+  history
+) => async dispatch => {
+  const res = await axios.get(
+    `http://localhost:8080/api/demande/account/numDates?dateCreation=${date}&numCompte=${num}`
+  );
+
+  dispatch({
+    type: GET_DEMANDEBYDATEETCOMPTE,
+    payload: res.data
+  });
+};
+
+export const getDemandeByDateEtCompteEtStatut = (
+  num,
+  date,
+  statut,
+  history
+) => async dispatch => {
+  const res = await axios.get(
+    `http://localhost:8080/api/demande/account/numStatusDates?dateCreation=${date}&numCompte=${num}&status=${statut}`
+  );
+
+  dispatch({
+    type: GET_DEMANDEBYDATEETCOMPTEETSTATUT,
     payload: res.data
   });
 };

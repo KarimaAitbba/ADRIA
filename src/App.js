@@ -1,7 +1,5 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import Form from "./Component/Add/Form";
 import { Provider } from "react-redux";
 import store from "./Strore";
 import Dashboard from "./Component/Dashboard/Dashboard";
@@ -14,12 +12,10 @@ function App() {
     <Router>
       <Provider store={store}>
         <div className="App">
-          <Switch>
-            <Route exact path="/" component={Dashboard} />
-            <Route exact path="/AddDemande" component={AddDemande} />
-            <Route exact path="/List" component={List} />
-            <Route exact path="/updateRequest/:id" component={UpdateRequest} />
-          </Switch>
+          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/AddDemande" component={AddDemande} />
+          <Route exact path="/List" component={List} />
+          <Route exact path="/updateRequest/:id" component={UpdateRequest} />
         </div>
       </Provider>
     </Router>

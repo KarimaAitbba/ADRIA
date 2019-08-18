@@ -8,7 +8,10 @@ import {
   getDemandeByCompte,
   getDemandeByCompteAndStatut,
   getDemandeByStatut,
-  getDemandeByDate
+  getDemandeByDate,
+  getDemandeByDateetStatut,
+  getDemandeByDateEtCompte,
+  getDemandeByDateEtCompteEtStatut
 } from "../../actions/projectactions";
 
 class Search extends Component {
@@ -18,6 +21,7 @@ class Search extends Component {
   }
   constructor() {
     super();
+    //state pour les champs de recherche: Date, NumAccount et Statut
     this.state = {
       numCompte: "",
       date: "",
@@ -32,6 +36,7 @@ class Search extends Component {
 
   onSubmit(e) {
     e.preventDefault();
+    //creation de l'objet recherche qui sera transmis à l'action
     const recherche = {
       numCompte: this.state.numCompte,
       date: this.state.date,
@@ -77,11 +82,52 @@ class Search extends Component {
     ) {
       this.props.getDemandeByDate(recherche.date, this.props.history);
     }
+
+    //Recherche par Date et Statut
+    if (
+      recherche.numCompte === "" &&
+      recherche.statut !== "" &&
+      recherche.date !== ""
+    ) {
+      this.props.getDemandeByDateetStatut(
+        recherche.statut,
+        recherche.date,
+        this.props.history
+      );
+    }
+
+    //Recherche par Date et Compte
+    if (
+      recherche.numCompte !== "" &&
+      recherche.statut === "" &&
+      recherche.date !== ""
+    ) {
+      this.props.getDemandeByDateEtCompte(
+        recherche.numCompte,
+        recherche.date,
+        this.props.history
+      );
+    }
+    // Recherche par les 3 champs:
+
+    if (
+      recherche.numCompte !== "" &&
+      recherche.statut !== "" &&
+      recherche.date !== ""
+    ) {
+      this.props.getDemandeByDateEtCompteEtStatut(
+        recherche.numCompte,
+        recherche.date,
+        recherche.statut,
+        this.props.history
+      );
+    }
   }
 
   render() {
+    //remplissage de dropDown des NumAccounts
     const { comptes } = this.props.compte;
-    const { demandes } = this.props.demande;
+
     return (
       <div class="card">
         <div class="card-header">
@@ -182,7 +228,10 @@ Search.propTypes = {
   getDemandeByCompte: PropTypes.func.isRequired,
   getDemandeByCompteAndStatut: PropTypes.func.isRequired,
   getDemandeByStatut: PropTypes.func.isRequired,
-  getDemandeByDate: PropTypes.func.isRequired
+  getDemandeByDate: PropTypes.func.isRequired,
+  getDemandeByDateetStatut: PropTypes.func.isRequired,
+  getDemandeByDateEtCompte: PropTypes.func.isRequired,
+  getDemandeByDateEtCompteEtStatut: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -199,6 +248,9 @@ export default connect(
     getDemandeByCompte,
     getDemandeByStatut,
     getDemandeByCompteAndStatut,
-    getDemandeByDate
+    getDemandeByDate,
+    getDemandeByDateetStatut,
+    getDemandeByDateEtCompte,
+    getDemandeByDateEtCompteEtStatut
   }
 )(Search);
